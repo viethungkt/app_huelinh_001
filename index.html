@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b5d3b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KPI Huệ Linh">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Đánh giá năng lực CNSX — Công ty Huệ Linh</title>
+<style>
+:root{
+  --xanh-dam:#0b5d3b; --xanh:#127a4e; --xanh-nhat:#e7f3ed;
+  --do:#d64545; --vang:#e6a817; --xanhduong:#2f7bbd; --xanhla:#3fa34d; --xanhladam:#1f7a33;
+  --tim:#5b21b6; --tim-nhat:#f3eefb; --cam:#d97706; --cam-nhat:#fdf3e7;
+  --xam:#6b7280; --xam-nhat:#f4f5f7; --vien:#e2e5ea; --chu:#1f2937; --nen:#f7f8fa;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--nen);color:var(--chu);font-size:14px;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.app{display:flex;min-height:100vh}
+/* Hamburger + overlay (mobile) */
+.hamburger{display:none;position:fixed;top:10px;left:10px;z-index:1001;background:var(--xanh-dam);color:#fff;border:none;border-radius:8px;width:42px;height:42px;font-size:20px;cursor:pointer}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999}
+.overlay.open{display:block}
+/* Sidebar */
+.sidebar{width:235px;background:var(--xanh-dam);color:#fff;flex-shrink:0;display:flex;flex-direction:column}
+.brand{padding:18px 16px;border-bottom:1px solid rgba(255,255,255,.15)}
+.brand h1{font-size:15px;font-weight:700;line-height:1.3}
+.brand span{font-size:11px;opacity:.8;display:block;margin-top:4px}
+.nav{flex:1;padding:10px 0}
+.nav button{width:100%;text-align:left;background:none;border:none;color:#dfeee7;padding:13px 18px;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:10px;border-left:3px solid transparent}
+.nav button:hover{background:rgba(255,255,255,.08)}
+.nav button.active{background:rgba(255,255,255,.13);border-left-color:#fff;color:#fff;font-weight:600}
+.nav .ico{font-size:16px;width:20px;text-align:center}
+.sidebar-foot{padding:12px 16px;font-size:11px;opacity:.7;border-top:1px solid rgba(255,255,255,.15)}
+.mode-pill{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:rgba(255,255,255,.2)}
+/* Main */
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{background:#fff;border-bottom:1px solid var(--vien);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.topbar h2{font-size:18px;color:var(--xanh-dam)}
+.topbar .sub{font-size:12px;color:var(--xam)}
+.content{padding:22px;flex:1}
+.view{display:none}
+.view.active{display:block}
+/* Card */
+.card{background:#fff;border:1px solid var(--vien);border-radius:10px;padding:18px;margin-bottom:18px}
+.card h3{font-size:15px;color:var(--xanh-dam);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--xanh-nhat)}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+.col{flex:1;min-width:200px}
+label{display:block;font-size:12px;font-weight:600;color:var(--xam);margin-bottom:4px}
+input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--vien);border-radius:6px;font-size:14px;font-family:inherit;background:#fff;color:var(--chu)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--xanh);box-shadow:0 0 0 2px rgba(18,122,78,.12)}
+textarea{resize:vertical;min-height:64px}
+.btn{background:var(--xanh);color:#fff;border:none;padding:10px 18px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--xanh-dam)}
+.btn.sec{background:#fff;color:var(--xanh);border:1px solid var(--xanh)}
+.btn.sec:hover{background:var(--xanh-nhat)}
+.btn.danger{background:var(--do)}
+.btn.danger:hover{background:#b53333}
+.btn.sm{padding:6px 12px;font-size:12px}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid var(--vien);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--xanh-nhat);color:var(--xanh-dam);font-weight:600}
+tr:nth-child(even) td{background:#fafbfc}
+.muted{color:var(--xam);font-size:12px}
+.center{text-align:center}.right{text-align:right}
+.tablewrap{overflow-x:auto}
+/* Score chips (1-5) */
+.score-group{display:flex;gap:6px;flex-wrap:wrap}
+.score-opt{position:relative}
+.score-opt input{position:absolute;opacity:0;width:0;height:0}
+.score-opt label{display:flex;align-items:center;justify-content:center;min-width:38px;height:38px;border-radius:6px;border:1.5px solid var(--vien);cursor:pointer;font-weight:700;margin:0;color:var(--xam);background:#fff;transition:.12s;padding:0 4px}
+.score-opt input:checked + label{color:#fff;transform:scale(1.05)}
+.score-opt input[value="1"]:checked + label{background:var(--do);border-color:var(--do)}
+.score-opt input[value="2"]:checked + label{background:var(--vang);border-color:var(--vang)}
+.score-opt input[value="3"]:checked + label{background:var(--xanhduong);border-color:var(--xanhduong)}
+.score-opt input[value="4"]:checked + label{background:var(--xanhla);border-color:var(--xanhla)}
+.score-opt input[value="5"]:checked + label{background:var(--xanhladam);border-color:var(--xanhladam)}
+.score-opt input:focus-visible + label{box-shadow:0 0 0 2px rgba(18,122,78,.4)}
+/* Nhóm A: tiêu chí card dạng lưới (như hình) */
+.grid-a{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.crit-cell{border:1px solid var(--vien);border-radius:8px;padding:12px;background:#fafbfc}
+.crit-cell .ct{font-weight:600;font-size:13px;margin-bottom:8px}
+.crit-cell .def{font-size:11px;color:var(--xam);margin-bottom:8px;min-height:0}
+.crit-cell select{font-size:13px}
+/* Section header có màu nhóm */
+.sec-head{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px 8px 0 0;color:#fff;font-weight:700;font-size:14px}
+.sec-a{background:var(--xanh)} .sec-b{background:var(--tim)} .sec-c{background:var(--cam)}
+.sec-vh{background:var(--xanhduong)} .sec-tt{background:#0ea5e9} .sec-vs{background:var(--xanhla)} .sec-dh{background:var(--tim)} .sec-td{background:var(--cam)} .sec-kl{background:var(--do)}
+.sec-body{border:1px solid var(--vien);border-top:none;border-radius:0 0 8px 8px;padding:16px;margin-bottom:18px}
+.sec-tag{font-size:11px;font-weight:600;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:10px;margin-left:auto}
+/* Nhóm B/C: 2 cột */
+.grid-bc{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.bc-col{display:flex;flex-direction:column;gap:10px}
+.bc-item{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--vien);border-radius:8px;padding:10px 12px;background:#fff}
+.bc-item .bn{font-size:13px;font-weight:500;flex:1}
+.bc-item select{max-width:185px;font-size:13px}
+/* KPI cards */
+.kpi-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.kpi-card{background:#fff;border:1px solid var(--vien);border-radius:10px;padding:16px;border-top:4px solid var(--xanh)}
+.kpi-card .k-label{font-size:12px;color:var(--xam);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.kpi-card .k-val{font-size:30px;font-weight:800;color:var(--xanh-dam);margin:6px 0}
+.kpi-card .k-sub{font-size:12px;color:var(--xam)}
+/* Badge */
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#fff}
+.b-5{background:var(--xanhladam)}.b-4{background:var(--xanhla)}.b-3{background:var(--xanhduong)}.b-2{background:var(--vang)}.b-1{background:var(--do)}
+/* Final box */
+.final-box{display:flex;align-items:center;gap:24px;flex-wrap:wrap;background:var(--xanh-nhat);border-radius:10px;padding:18px}
+.final-num{font-size:50px;font-weight:800;color:var(--xanh-dam);line-height:1}
+/* Empty */
+.empty{text-align:center;padding:50px 20px;color:var(--xam)}
+.empty .big{font-size:40px;margin-bottom:10px}
+/* Filters */
+.filters{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px}
+.filters .col{min-width:140px;flex:0 1 auto}
+/* Bar chart */
+.bar-chart{display:flex;flex-direction:column;gap:8px}
+.bar-row{display:flex;align-items:center;gap:10px}
+.bar-row .bl{width:170px;font-size:12px;flex-shrink:0;text-align:right}
+.bar-row .bt{flex:1;background:var(--xam-nhat);border-radius:4px;height:22px;position:relative;overflow:hidden}
+.bar-row .bf{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;color:#fff;font-size:11px;font-weight:700;min-width:24px}
+/* Autocomplete nhân viên */
+.nv-search-wrap{position:relative}
+.nv-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--vien);border-radius:0 0 8px 8px;box-shadow:0 8px 20px rgba(0,0,0,.12);max-height:260px;overflow-y:auto;z-index:200;display:none}
+.nv-dropdown.show{display:block}
+.nv-opt{padding:9px 12px;cursor:pointer;border-bottom:1px solid var(--xam-nhat);font-size:13px}
+.nv-opt:hover,.nv-opt.active{background:var(--xanh-nhat)}
+.nv-opt .nv-name{font-weight:600}
+.nv-opt .nv-meta{font-size:11px;color:var(--xam)}
+.nv-chip{display:inline-flex;align-items:center;gap:8px;background:var(--xanh-nhat);border:1px solid var(--xanh);border-radius:8px;padding:8px 12px;font-size:13px}
+.nv-chip b{color:var(--xanh-dam)}
+.nv-chip .x{cursor:pointer;color:var(--do);font-weight:700;font-size:16px;line-height:1}
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--xanh-dam);color:#fff;padding:14px 20px;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.2);font-weight:600;opacity:0;transform:translateY(10px);transition:.25s;z-index:2000;max-width:90vw}
+.toast.show{opacity:1;transform:translateY(0)}
+.tag{display:inline-block;background:var(--xam-nhat);padding:2px 8px;border-radius:4px;font-size:11px;color:var(--xam);margin-right:4px}
+.hint{background:var(--tim-nhat);border:1px solid #d9c8f2;border-radius:8px;padding:10px 14px;font-size:12px;color:#4c2a87;margin-bottom:14px}
+.radio-mode{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0}
+.radio-mode label{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--chu);cursor:pointer;border:1px solid var(--vien);border-radius:8px;padding:10px 14px;flex:1;min-width:240px}
+.radio-mode input{width:auto}
+/* Login Overlay */
+.login-overlay{position:fixed;inset:0;background:rgba(11,93,59,0.92);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.login-box{background:#fff;border-radius:16px;padding:28px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-header{text-align:center;margin-bottom:24px}
+.login-header h2{color:var(--xanh-dam);font-size:22px;margin-bottom:6px}
+.login-header p{color:var(--xam);font-size:13px}
+.login-box .form-group{margin-bottom:16px}
+.login-box label{display:block;font-size:13px;font-weight:600;color:var(--xam);margin-bottom:6px}
+.login-box input{width:100%;padding:12px 14px;border:2px solid var(--vien);border-radius:8px;font-size:16px;transition:.2s}
+.login-box input:focus{outline:none;border-color:var(--xanh);box-shadow:0 0 0 3px rgba(18,122,78,.15)}
+.login-box .btn-login{width:100%;padding:14px;font-size:16px;font-weight:700;margin-top:8px}
+.login-error{color:var(--do);font-size:13px;margin-top:12px;text-align:center;min-height:20px}
+.login-hint{text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--vien);color:var(--xam)}
+/* Responsive */
+@media(max-width:760px){
+  .hamburger{display:block}
+  .sidebar{position:fixed;left:-260px;top:0;bottom:0;z-index:1000;width:250px;transition:left .25s;box-shadow:2px 0 12px rgba(0,0,0,.2)}
+  .sidebar.open{left:0}
+  .topbar{padding:14px 16px 14px 60px}
+  .content{padding:14px}
+  input,select,textarea{padding:12px 10px;font-size:16px}
+  .score-opt label{min-width:46px;height:46px;font-size:16px}
+  .grid-bc{grid-template-columns:1fr}
+  .bc-item{flex-wrap:wrap}
+  .bc-item select{max-width:100%;width:100%}
+  .btn{padding:12px 18px}
+  .bar-row .bl{width:120px;font-size:11px}
+  .final-num{font-size:40px}
+  .topbar h2{font-size:16px}
+}
+/* Báo cáo nâng cao styles */
+.report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:18px}
+.report-card{background:#fff;border:1px solid var(--vien);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;border-top:4px solid var(--xanh)}
+.report-card .val{font-size:28px;font-weight:800;color:var(--xanh-dam)}
+.report-card .sub{font-size:12px;color:var(--xam)}
+.ranking-table{width:100%;border-collapse:collapse}
+.ranking-table th{background:var(--xam-nhat);color:var(--chu)}
+.ranking-table tr:hover td{background:var(--xanh-nhat)}
+@media print{
+  .sidebar,.topbar,.nav,.no-print,.hamburger,.overlay{display:none!important}
+  .content{padding:0}
+  .view{display:none!important}.view.active{display:block!important}
+  body.print-one .view.active > *{display:none!important}
+  body.print-one #printArea{display:block!important}
+  .card{border:none;padding:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <button class="hamburger no-print" id="hamburger" aria-label="Menu">☰</button>
+  <div class="overlay" id="overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <h1>Đánh giá năng lực CNSX</h1>
+      <span>Công ty TNHH TM-SX Huệ Linh</span>
+    </div>
+    <nav class="nav" id="nav">
+      <button data-view="dashboard" class="active"><span class="ico">📊</span><span class="txt">Bảng điều khiển</span></button>
+      <button data-view="danhgia"><span class="ico">📝</span><span class="txt">Phiếu đánh giá năng lực</span></button>
+      <button data-view="danhgia_hangngay"><span class="ico">📅</span><span class="txt">Đánh giá hàng ngày</span></button>
+      <button data-view="lichsu"><span class="ico">📋</span><span class="txt">Lịch sử & Báo cáo</span></button>
+      <button data-view="baocao"><span class="ico">📈</span><span class="txt">Báo cáo nâng cao</span></button>
+      <button data-view="danhmuc"><span class="ico">👥</span><span class="txt">Nhân sự & Danh mục</span></button>
+      <button data-view="bangiaoca"><span class="ico">🔄</span><span class="txt">Bàn giao ca</span></button>
+      <button data-view="kpinhamay"><span class="ico">🏭</span><span class="txt">KPI Nhà máy</span></button>
+      <button data-view="baotri"><span class="ico">🔧</span><span class="txt">Bảo trì máy</span></button>
+      <button data-view="dulieu"><span class="ico">⚙️</span><span class="txt">Sao lưu & Cài đặt</span></button>
+      <button data-view="huongdan"><span class="ico">💡</span><span class="txt">Hướng dẫn sử dụng</span></button>
+    </nav>
+    <div class="sidebar-foot">
+      Phiên bản V2.0 · Mã TL: 001-QLHS001
+      <div class="mode-pill" id="modePill">Chế độ: Cục bộ</div>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h2 id="viewTitle">Bảng điều khiển</h2>
+        <div class="sub" id="viewSub">Tổng quan hiệu suất nhân viên sản xuất</div>
+      </div>
+      <div class="btn-group no-print" id="topActions"></div>
+    </div>
+    <div class="content">
+      <section id="view-dashboard" class="view active"></section>
+      <section id="view-danhgia" class="view"></section>
+      <section id="view-danhgia_hangngay" class="view"></section>
+      <section id="view-lichsu" class="view"></section>
+      <section id="view-baocao" class="view"></section>
+      <section id="view-danhmuc" class="view"></section>
+      <section id="view-bangiaoca" class="view"></section>
+      <section id="view-kpinhamay" class="view"></section>
+      <section id="view-baotri" class="view"></section>
+      <section id="view-dulieu" class="view"></section>
+      <section id="view-huongdan" class="view"></section>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- Login Overlay -->
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-box">
+    <div class="login-header">
+      <h2>KPI Huệ Linh V2</h2>
+      <p>Hệ thống đánh giá năng lực sản xuất</p>
+    </div>
+    <form id="loginForm" onsubmit="return doLogin(event)">
+      <div class="form-group">
+        <label for="loginUser">Tên đăng nhập</label>
+        <input type="text" id="loginUser" placeholder="Nhập username" required autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label for="loginPass">Mật khẩu</label>
+        <input type="password" id="loginPass" placeholder="Nhập mật khẩu" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn-login">Đăng nhập</button>
+      <div class="login-error" id="loginError"></div>
+    </form>
+    <div class="login-hint">
+      <small>Admin mặc định: <b>admin</b> / <b>admin123</b></small>
+    </div>
+  </div>
+</div>
+
+<script src="data_nhansu.js"></script>
+<script src="auth.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "KPI Công nhân SX — Huệ Linh",
+  "short_name": "KPI Huệ Linh",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b5d3b",
+  "theme_color": "#0b5d3b",
+  "description": "Phiếu đánh giá năng lực nhân viên hàng ngày / định kỳ",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}
