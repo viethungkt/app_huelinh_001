@@ -293,7 +293,34 @@ function requireAuth() {
 
 function showLoginOverlay() {
   const overlay = document.getElementById('loginOverlay');
-  if (overlay) overlay.style.display = 'flex';
+  if (overlay) {
+    if (!overlay.innerHTML.trim()) {
+      overlay.innerHTML = `
+        <div class="login-box">
+          <div class="login-header">
+            <h2>KPI Huệ Linh V2</h2>
+            <p>Hệ thống đánh giá năng lực sản xuất</p>
+          </div>
+          <form id="loginForm" onsubmit="return doLogin(event)">
+            <div class="form-group">
+              <label for="loginUser">Tên đăng nhập</label>
+              <input type="text" id="loginUser" placeholder="Nhập username" required>
+            </div>
+            <div class="form-group">
+              <label for="loginPass">Mật khẩu</label>
+              <input type="text" class="masked-password" id="loginPass" placeholder="Nhập mật khẩu" required>
+            </div>
+            <button type="submit" class="btn-login">Đăng nhập</button>
+            <div class="login-error" id="loginError"></div>
+          </form>
+          <div class="login-hint">
+            <small>Tài khoản mặc định được cung cấp bởi Quản trị viên</small>
+          </div>
+        </div>
+      `;
+    }
+    overlay.style.display = 'flex';
+  }
 }
 
 function hideLoginOverlay() {
@@ -1643,7 +1670,7 @@ function renderDanhMuc(){
             </div>
             <div class="col" style="max-width:160px">
               <label>Mật khẩu</label>
-              <input type="password" id="usr_password" placeholder="Để trống nếu không đổi">
+              <input type="text" class="masked-password" id="usr_password" placeholder="Để trống nếu không đổi">
             </div>
             <div class="col" style="display:flex;align-items:flex-end;gap:10px">
               <button class="btn" id="btnSaveUser" type="button">💾 Lưu</button>
