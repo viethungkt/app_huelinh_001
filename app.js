@@ -308,7 +308,7 @@ function showLoginOverlay() {
             </div>
             <div class="form-group">
               <label for="loginPass">Mật khẩu</label>
-              <input type="text" class="masked-password" id="loginPass" placeholder="Nhập mật khẩu" required>
+              <input type="password" id="loginPass" placeholder="Nhập mật khẩu" required>
             </div>
             <button type="submit" class="btn-login">Đăng nhập</button>
             <div class="login-error" id="loginError"></div>
@@ -1670,7 +1670,7 @@ function renderDanhMuc(){
             </div>
             <div class="col" style="max-width:160px">
               <label>Mật khẩu</label>
-              <input type="text" class="masked-password" id="usr_password" placeholder="Để trống nếu không đổi">
+              <input type="password" id="usr_password" placeholder="Để trống nếu không đổi">
             </div>
             <div class="col" style="display:flex;align-items:flex-end;gap:10px">
               <button class="btn" id="btnSaveUser" type="button">💾 Lưu</button>
